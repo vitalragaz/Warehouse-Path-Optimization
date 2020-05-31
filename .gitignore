@@ -4,4 +4,4 @@
 out
 gen
 node_modules/
-app/lib/
+app/lib/*
