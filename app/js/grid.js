@@ -26,6 +26,13 @@ Grid.prototype.getWaypointNr = function(slotNr) {
   return slotNr;
 };
 
+Grid.prototype.changeLayout = function(lanes, slotsInLane) {
+  this.lanes = lanes;
+  this.slotsInLane = slotsInLane;
+  $(".grid-container").html("");
+  this.render();
+};
+
 Grid.prototype.render = function() {
   renderGrid();
 
@@ -113,5 +120,8 @@ Grid.prototype.render = function() {
         "z-index": -1
       })
       .appendTo(".grid-container");
+
+    // Robot
+    $('<div id="robot" />').appendTo(".grid-container");
   }
 };

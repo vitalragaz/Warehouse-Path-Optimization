@@ -38,10 +38,20 @@
         <input type="button" value="Generieren" onclick="indexController.generateJobs()"/>
         <input type="button" value="Optimieren" onclick="indexController.calculateJobDistance()"/><br>
       </p>
+
+      <p>
+        <b>Slots in Lanes</b><br>
+        <input type="number" id="numberSlots" name="quantity" min="1" value="14">
+      </p>
+      <p>
+        <b>Lanes</b><br>
+        <input type="number" id="numberLanes" name="quantity" min="1" value="16">
+      </p>
+      <input type="button" value="ChangeLayout" onclick="grid.changeLayout($('#numberLanes').val(),$('#numberSlots').val())"/><br>
+
     </form>
   </div>
   <div class="grid-container">
-    <div id="robot"></div>
   </div>
 </div>
 </body>
