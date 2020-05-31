@@ -1,4 +1,4 @@
-var grid = new Grid(8, 24, 40);
+var grid = new Grid(16, 14, 40);
 
 function Grid(lanes, slotsInLane, slotPixelSize) {
   this.lanes = lanes;
@@ -23,7 +23,7 @@ Grid.prototype.getSlotNr = function(lane, slotPositionInLane) {
 };
 
 Grid.prototype.getWaypointNr = function(slotNr) {
-  return Math.ceil(slotNr / 2);
+  return slotNr;
 };
 
 Grid.prototype.render = function() {
@@ -33,23 +33,25 @@ Grid.prototype.render = function() {
     var size = grid.getSlotPixelSize();
 
     for (var lane = 1; lane <= grid.getLanes(); lane++) {
+      var currentEvenLane = lane % 2 == 0 ? lane : currentEvenLane;
       for (var slot = 1; slot <= grid.getSlotsInLane(); slot++) {
         var slotNr = grid.getSlotNr(lane, slot);
         var waypointNr = grid.getWaypointNr(slotNr);
 
-        if (slot % 2 != 0) {
-          // Waypoint
-          $("<div id=" + "waypoint-" + waypointNr + "/>")
-            .css({
-              position: "absolute",
-              top: (slot / 2) * size + slot * 2,
-              left: 3 * lane * size + 5 * lane - 2 * size,
-              width: size,
-              height: size,
-              "z-index": -1
-            })
-            .appendTo(".grid-container");
+        // Waypoint
+        let leftOffset = lane == 1 ? 45 : 3 * lane * size + 5 * lane - (currentEvenLane + 2) * size;
 
+        $("<div id=" + "waypoint-" + waypointNr + ' class="waypoint"/>')
+          .css({
+            position: "absolute",
+            top: slot * size + slot * 2,
+            left: leftOffset,
+            width: size,
+            height: size,
+            "z-index": -1
+          })
+          .appendTo(".grid-container");
+        if (lane % 2 != 0) {
           // Left Slot
           $("<div id=" + "slot-" + slotNr + '><span class="slot-nr">' + slotNr + "</span></div>")
             .css({
@@ -65,7 +67,7 @@ Grid.prototype.render = function() {
             })
             .appendTo("#waypoint-" + waypointNr);
         } else {
-          // Right Slot
+          // Left Slot
           $("<div id=" + "slot-" + slotNr + '><span class="slot-nr">' + slotNr + "</span></div>")
             .css({
               position: "absolute",
@@ -106,7 +108,7 @@ Grid.prototype.render = function() {
     $('<div id="optimizedJobTable"/>')
       .css({
         position: "absolute",
-        top: (grid.getSlotsInLane() / 2) * size + slot * 6,
+        top: grid.getSlotsInLane() * size + slot * 12,
         left: 0,
         "z-index": -1
       })

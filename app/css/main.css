@@ -6,7 +6,7 @@ body {
 
 a {
   text-decoration: none;
-  color: #1E90FF;
+  color: #1e90ff;
 }
 
 h1 {
@@ -14,18 +14,23 @@ h1 {
   z-index: -1;
 }
 
-input, select {
-  color: #5CBB24;
+input,
+select {
+  color: #5cbb24;
   font-size: 16px;
 }
 
 #robot {
   background: url("../img/wall-e.png") no-repeat;
   background-size: contain;
-  width: 70px;
-  height: 70px;
+  width: 40px;
+  height: 40px;
   display: none;
   z-index: 1;
+}
+
+div.waypoint {
+  background: rgba(128, 128, 128, 0.1);
 }
 
 #job-container {
@@ -35,7 +40,6 @@ input, select {
 }
 
 #optimizedJobTable {
-
 }
 
 .main-container {
@@ -47,7 +51,6 @@ input, select {
   display: inline-block;
   vertical-align: top;
 }
-
 
 .grid-container {
   display: inline-block;

@@ -1,18 +1,18 @@
 var animations = function(inJobs) {
   var inJobs = inJobs;
-  var robot = '#robot',
-      $robot = $('#robot'),
-      waypoint = '#waypoint',
-      slot = '#slot',
-      item = '#item',
-      slotSize = grid.getSlotPixelSize(),
-      lanes = grid.getLanes(),
-      currentDirection = "up",
-      lastWaypoint = null,
-      lastItem = null,
-      unsortedItemQueue = [],
-      itemQueue = [],
-      waypointQueue = [];
+  var robot = "#robot",
+    $robot = $("#robot"),
+    waypoint = "#waypoint",
+    slot = "#slot",
+    item = "#item",
+    slotSize = grid.getSlotPixelSize(),
+    lanes = grid.getLanes(),
+    currentDirection = "up",
+    lastWaypoint = null,
+    lastItem = null,
+    unsortedItemQueue = [],
+    itemQueue = [],
+    waypointQueue = [];
 
   move.defaults = {
     duration: 800
@@ -32,27 +32,27 @@ var animations = function(inJobs) {
     initPosition();
 
     $('[id^="item"]').css({
-      'opacity': 1,
-      'display': 'none'
+      opacity: 1,
+      display: "none"
     });
   };
 
   var initPosition = function() {
-    var $lastWaypointInFirstLane = $('#waypoint-' + (grid.getSlotsInLane()/2));
+    var $lastWaypointInFirstLane = $("#waypoint-" + grid.getSlotsInLane());
 
     $robot.css({
-      'display': 'block',
-      'margin-top': $lastWaypointInFirstLane.position().top + slotSize + 5,
-      'margin-left': $lastWaypointInFirstLane.position().left - (2 * slotSize)
+      display: "block",
+      "margin-top": $lastWaypointInFirstLane.position().top + slotSize + 5,
+      "margin-left": $lastWaypointInFirstLane.position().left - 2 * slotSize
     });
   };
 
   var animateJobGroup = function(jobGroup) {
     reset();
 
-    for(var j=1; j<=Object.keys(jobGroup).length;j++) {
+    for (var j = 1; j <= Object.keys(jobGroup).length; j++) {
       jobGroup[j].items.forEach(function(selected) {
-        unsortedItemQueue.push(parseInt(selected))
+        unsortedItemQueue.push(parseInt(selected));
       });
     }
 
@@ -60,7 +60,7 @@ var animations = function(inJobs) {
 
     console.log(itemQueue);
     console.log("Items in animation queue aufgenommen: " + itemQueue);
-  
+
     for (var i = 0; i < itemQueue.length; i++) {
       waypointQueue[i] = grid.getWaypointNr(itemQueue[i]);
     }
@@ -73,27 +73,31 @@ var animations = function(inJobs) {
 
   function sortItemQueue(unsortedItemQueue) {
     var slotsInLane = grid.getSlotsInLane(),
-        upMovement = true;
+      upMovement = true;
 
     for (var lane = 1; lane <= lanes; lane++) {
       var laneQueue = [];
 
-      unsortedItemQueue.forEach(function(item){
-        if (((lane * slotsInLane) >= item) && (item > ((lane * slotsInLane) - slotsInLane))) {
+      unsortedItemQueue.forEach(function(item) {
+        if (lane * slotsInLane >= item && item > lane * slotsInLane - slotsInLane) {
           laneQueue.push(item);
         }
       });
 
       if (laneQueue.length > 0) {
         if (upMovement) {
-          laneQueue.sort(function(a,b){return b-a});
+          laneQueue.sort(function(a, b) {
+            return b - a;
+          });
           upMovement = false;
         } else {
-          laneQueue.sort(function(a,b){return a-b});
+          laneQueue.sort(function(a, b) {
+            return a - b;
+          });
           upMovement = true;
         }
 
-        laneQueue.forEach(function(item){
+        laneQueue.forEach(function(item) {
           itemQueue.push(item);
         });
       }
@@ -102,13 +106,13 @@ var animations = function(inJobs) {
 
   function showItems(items) {
     for (var i = 0; i < items.length; i++) {
-      $('#item-' + items[i]).show();
+      $("#item-" + items[i]).show();
     }
   }
 
   function hideItems(items) {
     for (var i = 0; i < items.length; i++) {
-      $('#item-' + items[i]).hide();
+      $("#item-" + items[i]).hide();
     }
   }
 
@@ -117,9 +121,9 @@ var animations = function(inJobs) {
       callback();
     } else {
       lastItem = itemNr;
-      move('#item-' + itemNr)
-        .set('opacity', '0')
-        .duration('0.3s')
+      move("#item-" + itemNr)
+        .set("opacity", "0")
+        .duration("0.3s")
         .end(callback);
     }
   }
@@ -133,30 +137,30 @@ var animations = function(inJobs) {
   }
 
   var moveToNextWaypoint = function(waypointNr, callback) {
-    var rowOffsetTop = $('#waypoint-1').offset().top - slotSize - 35,
-        rowOffsetBottom = $('#waypoint-' + (grid.getSlotsInLane()/2)).offset().top + slotSize + 5,
-        $waypoint = $('#waypoint-' + waypointNr),
-        wpOffsetLeft = $waypoint.offset().left - 5,
-        wpOffsetTop = $waypoint.offset().top,
-        movedToLane = false,
-        movedToSlot = false,
-        movedToOffsetRow = false;
+    var rowOffsetTop = $("#waypoint-1").offset().top - slotSize,
+      rowOffsetBottom = $("#waypoint-" + grid.getSlotsInLane()).offset().top + slotSize + 5,
+      $waypoint = $("#waypoint-" + waypointNr),
+      wpOffsetLeft = $waypoint.offset().left - 5,
+      wpOffsetTop = $waypoint.offset().top,
+      movedToLane = false,
+      movedToSlot = false,
+      movedToOffsetRow = false;
 
     triggerNextAnimation();
 
     function triggerNextAnimation() {
       var robotOffsetLeft = $robot.offset().left,
-          robotOffsetTop = $robot.offset().top,
-          isInOffsetRow = (rowOffsetTop >= robotOffsetTop) || (rowOffsetBottom <= robotOffsetTop);
+        robotOffsetTop = $robot.offset().top,
+        isInOffsetRow = rowOffsetTop >= robotOffsetTop || rowOffsetBottom <= robotOffsetTop;
 
-      if (!movedToLane && (wpOffsetLeft > robotOffsetLeft)) {
+      if (!movedToLane && wpOffsetLeft > robotOffsetLeft) {
         switchLane();
-      } else if (!movedToSlot && (wpOffsetTop < robotOffsetTop)) {
-        moveUpBy((robotOffsetTop - wpOffsetTop));
+      } else if (!movedToSlot && wpOffsetTop < robotOffsetTop) {
+        moveUpBy(robotOffsetTop - wpOffsetTop);
         currentDirection = "up";
         movedToSlot = true;
       } else if (wpOffsetTop > robotOffsetTop) {
-        moveDownBy(!movedToSlot && (wpOffsetTop - robotOffsetTop));
+        moveDownBy(!movedToSlot && wpOffsetTop - robotOffsetTop);
         currentDirection = "down";
         movedToSlot = true;
       } else {
@@ -180,35 +184,35 @@ var animations = function(inJobs) {
 
     function moveRightBy(pixels) {
       move(robot)
-        .add('margin-left', pixels)
+        .add("margin-left", pixels)
         .end(triggerNextAnimation);
     }
 
     function moveDownBy(pixels) {
       move(robot)
-        .add('margin-top', pixels)
+        .add("margin-top", pixels)
         .end(triggerNextAnimation);
     }
 
     function moveUpBy(pixels) {
       move(robot)
-        .sub('margin-top', pixels)
+        .sub("margin-top", pixels)
         .end(triggerNextAnimation);
     }
   };
 
   function moveToEnd(callback) {
-    var $lastWaypointInFirstLane = $('#waypoint-' + (grid.getSlotsInLane()/2)),
-        offsetBottom = ($lastWaypointInFirstLane.offset().top + slotSize + 5) - $robot.offset().top,
-        offsetRight = $robot.offset().left - ($lastWaypointInFirstLane.offset().left - (2 * slotSize)),
-        moveLeft = move(robot)
-          .sub('margin-left', offsetRight)
-          .then(callback);
+    var $lastWaypointInFirstLane = $("#waypoint-" + grid.getSlotsInLane()),
+      offsetBottom = $lastWaypointInFirstLane.offset().top + slotSize + 5 - $robot.offset().top,
+      offsetRight = $robot.offset().left - ($lastWaypointInFirstLane.offset().left - 2 * slotSize),
+      moveLeft = move(robot)
+        .sub("margin-left", offsetRight)
+        .then(callback);
 
-      move(robot)
-        .add('margin-top', offsetBottom)
-        .then(moveLeft)
-        .end();
+    move(robot)
+      .add("margin-top", offsetBottom)
+      .then(moveLeft)
+      .end();
   }
 
   function animateNextAction() {
