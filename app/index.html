@@ -20,25 +20,7 @@
   <a><h1>A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization  </h1></a>
   <div class="form-container">
     <form>
-      <b>1. Auftragsdatei einlesen</b><br>
-      <input type="file" id="jobFileSelect" value="Auftragsdatei einlesen" onchange="indexController.readSingleFile(this)"/>
-      <p>
-        <b>2. Anzahl der Behälter</b><br>
-        <select id="jobsPerGroup" name="quantity">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select> Stück
-      </p>
-      <p>
-        <textarea id="job-container"></textarea><br>
-        <input type="button" value="Generieren" onclick="indexController.generateJobs()"/>
-        <input type="button" value="Optimieren" onclick="indexController.calculateJobDistance()"/><br>
-      </p>
-
+      <b>1. Warehouse Layout</b><br>
       <p>
         <b>Slots in Lanes</b><br>
         <input type="number" id="numberSlots" name="quantity" min="1" value="14">
@@ -47,8 +29,15 @@
         <b>Lanes</b><br>
         <input type="number" id="numberLanes" name="quantity" min="1" value="16">
       </p>
-      <input type="button" value="ChangeLayout" onclick="grid.changeLayout($('#numberLanes').val(),$('#numberSlots').val())"/><br>
+      <p><input type="button" value="Apply" onclick="grid.changeLayout($('#numberLanes').val(),$('#numberSlots').val())"/></p><br>
 
+      <b>2. Read in order file</b><br>
+      <input type="file" id="jobFileSelect" value="Read in order file" onchange="indexController.readSingleFile(this)"/>
+      <p>
+        <textarea id="job-container"></textarea><br>
+        <input type="button" value="Generieren" onclick="indexController.generateJobs()"/>
+        <input type="button" value="Optimieren" onclick="indexController.calculateJobDistance()"/><br>
+      </p>
     </form>
   </div>
   <div class="grid-container">
