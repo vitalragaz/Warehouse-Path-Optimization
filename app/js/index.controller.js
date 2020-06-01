@@ -64,19 +64,22 @@ class IndexController {
       console.log("=====");
       job.items.forEach(item => {
         var $wpPosition = $("#waypoint-" + item).position();
-        processArr.push({ item: item, p: new Point($wpPosition.left, $wpPosition.top) });
+        processArr.push({ item: item, p: { x: $wpPosition.left, y: $wpPosition.top } });
       });
       console.log(processArr);
-      var solution = solve(processArr.map(m => m.p));
 
-      var ordered_points = solution.map(i => processArr[i]);
+      var sm = new Salesman(processArr.map(m => m.p));
+
+      var solution = sm.solve();
+      console.log(solution);
+      var ordered_points = solution.map(i => processArr.find(m => m.p.x == i.x && m.p.y == i.y));
 
       console.log(ordered_points);
       job.items = ordered_points.map(m => m.item);
-      let a = grid.getSlotPixelSize(),
+      /*let a = grid.getSlotPixelSize(),
         b = grid.getSlotPixelSize(),
         y = grid.getSlotPixelSize() * 2;
-
+*/
       // a = depth of a cell
       // b = width of a cell
       // y = with of an aisle
