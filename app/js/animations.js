@@ -12,7 +12,8 @@ var animations = function(inJobs) {
     lastItem = null,
     unsortedItemQueue = [],
     itemQueue = [],
-    waypointQueue = [];
+    waypointQueue = [],
+    walkSpeed = 250;
 
   move.defaults = {
     duration: 800
@@ -140,7 +141,7 @@ var animations = function(inJobs) {
     var rowOffsetTop = $("#waypoint-1").offset().top - slotSize,
       rowOffsetBottom = $("#waypoint-" + grid.getSlotsInLane()).offset().top + slotSize + 5,
       $waypoint = $("#waypoint-" + waypointNr),
-      wpOffsetLeft = $waypoint.offset().left - 5,
+      wpOffsetLeft = $waypoint.offset().left,
       wpOffsetTop = $waypoint.offset().top,
       movedToLane = false,
       movedToSlot = false,
@@ -169,10 +170,13 @@ var animations = function(inJobs) {
       }
 
       function switchLane() {
-        if (!movedToOffsetRow && (!isInOffsetRow && currentDirection === "down")) {
+        if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetLeft - robotOffsetLeft == 45)) {
+          moveRightBy(wpOffsetLeft - robotOffsetLeft);
+          movedToLane = true;
+        } else if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetTop > rowOffsetBottom / 2)) {
           moveDownBy(rowOffsetBottom - robotOffsetTop);
           movedToOffsetRow = true;
-        } else if (!movedToOffsetRow && (!isInOffsetRow && currentDirection === "up")) {
+        } else if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetTop < rowOffsetBottom / 2)) {
           moveUpBy(robotOffsetTop - rowOffsetTop);
           movedToOffsetRow = true;
         } else {
@@ -185,18 +189,21 @@ var animations = function(inJobs) {
     function moveRightBy(pixels) {
       move(robot)
         .add("margin-left", pixels)
+        .duration(walkSpeed * (pixels / grid.getSlotPixelSize()))
         .end(triggerNextAnimation);
     }
 
     function moveDownBy(pixels) {
       move(robot)
         .add("margin-top", pixels)
+        .duration(walkSpeed * (pixels / grid.getSlotPixelSize()))
         .end(triggerNextAnimation);
     }
 
     function moveUpBy(pixels) {
       move(robot)
         .sub("margin-top", pixels)
+        .duration(walkSpeed * (pixels / grid.getSlotPixelSize()))
         .end(triggerNextAnimation);
     }
   };
@@ -207,10 +214,12 @@ var animations = function(inJobs) {
       offsetRight = $robot.offset().left - ($lastWaypointInFirstLane.offset().left - 2 * slotSize),
       moveLeft = move(robot)
         .sub("margin-left", offsetRight)
+        .duration(walkSpeed * (offsetRight / grid.getSlotPixelSize()))
         .then(callback);
 
     move(robot)
       .add("margin-top", offsetBottom)
+      .duration(walkSpeed * (offsetBottom / grid.getSlotPixelSize()))
       .then(moveLeft)
       .end();
   }
