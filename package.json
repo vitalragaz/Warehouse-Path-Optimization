@@ -5,8 +5,9 @@
   "main": "./app/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel-transpile": "babel ./app/js --watch --out-dir ./app/lib",
-    "start": "babel ./app/js --out-dir ./app/lib && node index.js"
+    "watch": "babel ./app/js --watch --out-dir ./app/lib",
+    "start": "node index.js",
+    "build": "babel ./app/js --out-dir ./app/lib"
   },
   "repository": {
     "type": "git",
