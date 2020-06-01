@@ -1,47 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <script type="text/javascript" src="js/lib/jquery-3.0.0.min.js"></script>
-  <script type="text/javascript" defer src="js/lib/move.min.js"></script>
-  <script type="text/javascript" src="js/grid.js"></script>
-  <script type="text/javascript" src="js/animations.js"></script>
-  <script type="text/javascript" src="lib/index.controller.js"> </script>
-  <link rel="stylesheet" href="css/main.css">
-  <title>A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization   </title>
-</head>
-<body>
-<script>
-  $(document).ready(function() {
-    grid.render();
-  });
-</script>
-<div class="main-container">
-  <a><h1>A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization  </h1></a>
-  <div class="form-container">
-    <form>
-      <b>1. Warehouse Layout</b><br>
-      <p>
-        <b>Slots in Lanes</b><br>
-        <input type="number" id="numberSlots" min="1" value="14">
-      </p>
-      <p>
-        <b>Lanes</b><br>
-        <input type="number" id="numberLanes" min="1" value="16">
-      </p>
-      <p><input type="button" value="Apply" onclick="grid.changeLayout($('#numberLanes').val(),$('#numberSlots').val())"/></p><br>
+  <head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript" src="js/lib/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" defer src="js/lib/move.min.js"></script>
+    <script type="text/javascript" src="js/grid.js"></script>
+    <script type="text/javascript" src="js/animations.js"></script>
+    <script type="text/javascript" src="lib/index.controller.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
+    <title>A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization</title>
+  </head>
+  <body>
+    <script>
+      $(document).ready(function() {
+        grid.render();
+      });
+    </script>
+    <div class="main-container">
+      <a><h1>A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization</h1></a>
+      <div class="form-container">
+        <form>
+          <b>1. Warehouse Layout</b><br />
+          <p>
+            <b>Slots in Lanes</b><br />
+            <input type="number" id="numberSlots" min="1" value="14" />
+          </p>
+          <p>
+            <b>Lanes</b><br />
+            <input type="number" id="numberLanes" min="1" value="16" />
+          </p>
+          <p>
+            <input
+              type="button"
+              value="Apply"
+              onclick="grid.changeLayout($('#numberLanes').val(),$('#numberSlots').val())"
+            />
+          </p>
+          <br />
 
-      <b>2. Read in order file</b><br>
-      <input type="file" id="jobFileSelect" value="Read in order file" onchange="indexController.readSingleFile(this)"/>
-      <p>
-        <textarea id="job-container"></textarea><br>
-        <input type="button" value="Generate" onclick="indexController.generateJobs()"/>
-        <input type="button" value="Optimize" onclick="indexController.calculateJobDistance()"/><br>
-      </p>
-    </form>
-  </div>
-  <div class="grid-container">
-  </div>
-</div>
-</body>
+          <b>2. Generate jobs or read in order file</b><br />
+
+
+          <p>
+            <input
+              type="file"
+              id="jobFileSelect"
+              value="Read in order file"
+              onchange="indexController.readSingleFile(this)"
+            />
+          </p>
+          <hr />
+          <p>
+            Number of items:
+            <input type="number" id="jobGenerateNumberOfItems" min="1" value="6" />
+            <input type="button" value="Generate" onclick="indexController.generateJobs()" />
+          </p>
+          <hr />
+          <p>
+            <textarea id="job-container"></textarea><br />
+            <input type="button" value="Optimize" onclick="indexController.calculateJobDistance()" /><br />
+          </p>
+        </form>
+      </div>
+      <div class="grid-container"></div>
+    </div>
+  </body>
 </html>

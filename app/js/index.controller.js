@@ -28,13 +28,18 @@ class IndexController {
    * generateJobs()
    */
   generateJobs() {
-    var generatedData = "name,item1,item2,item3,item4,item5,item6\n";
-    for (var i = 1; i <= 10; i++) {
-      var items = Math.round(Math.random() * 3) + 3;
+    var generatedData = "name";
 
+    var itemCount = $("#jobGenerateNumberOfItems").val();
+
+    for (var i = 1; i <= itemCount; i++) {
+      generatedData += ",item" + i;
+    }
+    generatedData += "\n";
+    for (var i = 1; i <= 5; i++) {
       generatedData += "customer" + i + ",";
 
-      for (var j = 0; j < items; j++) {
+      for (var j = 0; j < itemCount; j++) {
         generatedData += Math.round(Math.random() * (grid.getSlotsInLane() * grid.getLanes() - 1)) + ",";
       }
       generatedData = generatedData.substring(0, generatedData.length - 1) + "\n";
