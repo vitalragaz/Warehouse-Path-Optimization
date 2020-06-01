@@ -49,12 +49,8 @@ class IndexController {
   /**
    * calculateJobDistance
    */
-  calculateJobDistance() {
+  calculate() {
     this.jobObj = this.processData(document.getElementById("job-container").value);
-    for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
-      var singleJobObj = this.jobObj[i];
-      this.jobObj[i].jobDistance = this.calculateSingleJobDistance(singleJobObj);
-    }
 
     this.printTable();
   }
@@ -63,26 +59,12 @@ class IndexController {
    * printTable
    */
   printTable() {
-    let tableContent =
-      "<table>" + "<tr>" + "<td>Id</td>" + "<td>Name</td>" + "<td>Items</td>" + "<td>JDistance</td>" + "</tr>\n";
+    let tableContent = "<table>" + "<tr>" + "<td>Id</td>" + "<td>Name</td>" + "<td>Items</td>" + "</tr>\n";
 
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       let job = this.jobObj[i];
 
-      tableContent +=
-        "<tr>" +
-        "<td>" +
-        i +
-        "</td>" +
-        "<td>" +
-        job.name +
-        "</td>" +
-        "<td>" +
-        job.items +
-        "</td>" +
-        "<td>" +
-        job.jobDistance +
-        "</td>";
+      tableContent += "<tr>" + "<td>" + i + "</td>" + "<td>" + job.name + "</td>" + "<td>" + job.items + "</td>";
 
       tableContent +=
         '<td><input type="Button" value="start" onclick="new animations([' + job.items + '])"))"></input></td>';
@@ -92,62 +74,6 @@ class IndexController {
 
     tableContent += "</table>";
     document.getElementById("optimizedJobTable").innerHTML = tableContent;
-  }
-
-  /**
-   * findShortestPathObj
-   * @param {*} jobObj
-   * @param {*} shortest
-   */
-  findShortestPathObj(jobObj, shortest) {
-    var singleJobObj = jobObj[1];
-
-    for (var j = 1; j <= Object.keys(jobObj).length; j++) {
-      if (typeof jobObj[j].groupId == "undefined") {
-        singleJobObj = jobObj[j];
-        continue;
-      }
-    }
-
-    for (var i = 1; i <= Object.keys(jobObj).length; i++) {
-      if (typeof jobObj[i].groupId == "undefined") {
-        if (singleJobObj.jobDistance > jobObj[i].jobDistance && shortest == true) {
-          singleJobObj = jobObj[i];
-        }
-        if (singleJobObj.jobDistance < jobObj[i].jobDistance && shortest == false) {
-          singleJobObj = jobObj[i];
-        }
-      }
-    }
-    return singleJobObj;
-  }
-
-  /**
-   * calculateSingleJobDistance
-   * @param {*} singleJobObj
-   */
-  calculateSingleJobDistance(singleJobObj) {
-    var slotsInLane = grid.getSlotsInLane();
-    var costTraversing = 0.1;
-    var costPerLane = 1;
-
-    var distance = 0;
-    var currentLane = 0;
-
-    for (var j = 0; j < singleJobObj.items.length; j++) {
-      var singleItem = singleJobObj.items[j];
-
-      var goToLane = Math.floor(singleItem / slotsInLane) + 1;
-      distance += (goToLane - currentLane) * costTraversing;
-
-      if (goToLane != currentLane) {
-        distance += costPerLane;
-      }
-      currentLane = goToLane;
-    }
-    distance = distance + currentLane * costTraversing;
-
-    return distance.toFixed(1);
   }
 
   /**
