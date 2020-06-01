@@ -10,6 +10,10 @@ class IndexController {
     var jobObj;
   }
 
+  /**
+   * readSingleFile()
+   * @param {*} e
+   */
   readSingleFile(e) {
     var reader = new FileReader();
 
@@ -20,6 +24,9 @@ class IndexController {
     reader.readAsText(e.files[0]);
   }
 
+  /**
+   * generateJobs()
+   */
   generateJobs() {
     var generatedData = "name,item1,item2,item3,item4,item5,item6\n";
     for (var i = 1; i <= 10; i++) {
@@ -36,10 +43,11 @@ class IndexController {
     document.getElementById("job-container").value = generatedData;
   }
 
+  /**
+   * calculateJobDistance
+   */
   calculateJobDistance() {
     this.jobObj = this.processData(document.getElementById("job-container").value);
-    //for(var singleJobObj of jobObj) {
-
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       var singleJobObj = this.jobObj[i];
 
@@ -52,6 +60,9 @@ class IndexController {
     this.printTable();
   }
 
+  /**
+   * calculateGroupDistance
+   */
   calculateGroupDistance() {
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       var singleJobObj = this.jobObj[i];
@@ -68,9 +79,11 @@ class IndexController {
     }
   }
 
+  /**
+   * printTable
+   */
   printTable() {
-    let jobsPerGroup = document.getElementById("jobsPerGroup").value;
-    let groupCount = Math.ceil((Object.keys(this.jobObj).length / jobsPerGroup).toFixed(2));
+    let groupCount = Math.ceil((Object.keys(this.jobObj).length / 1).toFixed(2));
 
     let groupsPrinted = [];
     let tableContent =
@@ -132,8 +145,6 @@ class IndexController {
       "<tr>" +
       "<td></td><td></td><td></td><td></td><td></td><td>" +
       this.sumJobDistance() +
-      "</td><td>" +
-      this.sumGroupDistance() +
       "</td>" +
       "</tr>" +
       "</table>";
@@ -141,6 +152,9 @@ class IndexController {
     document.getElementById("optimizedJobTable").innerHTML = tableContent;
   }
 
+  /**
+   * sumJobDistance()
+   */
   sumJobDistance() {
     let sumDistance = 0;
     for (let i = 1; i <= Object.keys(this.jobObj).length; i++) {
@@ -149,23 +163,10 @@ class IndexController {
     return sumDistance.toFixed(1);
   }
 
-  sumGroupDistance() {
-    let jobsPerGroup = document.getElementById("jobsPerGroup").value;
-    let groupCount = Math.ceil((Object.keys(this.jobObj).length / jobsPerGroup).toFixed(2));
-    let sumDistance = 0;
-
-    for (let i = 1; i <= groupCount; i++) {
-      for (let j = 1; j <= Object.keys(this.jobObj).length; j++) {
-        let selectedObj = this.jobObj[j];
-
-        if (selectedObj.groupId == i) {
-          sumDistance += parseFloat(selectedObj.groupDistance);
-          break;
-        }
-      }
-    }
-    return sumDistance.toFixed(1);
-  }
+  /**
+   * getJobsWithGroupId()
+   * @param {*} groupId
+   */
   getJobsWithGroupId(groupId) {
     var jobsWithSameGroupId = {};
     var j = 0;
@@ -178,9 +179,12 @@ class IndexController {
     return jobsWithSameGroupId;
   }
 
+  /**
+   * groupJobsPerDistance
+   */
   groupJobsPerDistance() {
-    let jobsPerGroup = document.getElementById("jobsPerGroup").value;
-    let groupCount = Math.ceil((Object.keys(this.jobObj).length / jobsPerGroup).toFixed(2));
+    let jobsPerGroup = 1;
+    let groupCount = Math.ceil((Object.keys(this.jobObj).length / 1).toFixed(2));
     let jobsAmount = Object.keys(this.jobObj).length;
 
     for (let i = 1; i <= groupCount; i++) {
@@ -212,6 +216,10 @@ class IndexController {
     }
   }
 
+  /**
+   * findMostSimilarJob
+   * @param {*} sourceJob
+   */
   findMostSimilarJob(sourceJob) {
     let ungroupedJobs = this.getAllUngroupedJobs();
 
@@ -242,6 +250,9 @@ class IndexController {
     return bestMatchingJob;
   }
 
+  /**
+   * calculateAlleys
+   */
   calculateAlleys() {
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       let singleJob = this.jobObj[i];
@@ -253,6 +264,9 @@ class IndexController {
       }
     }
   }
+  /**
+   * getAllUngroupedJobs
+   */
   getAllUngroupedJobs() {
     let ungroupedJobs = {};
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
@@ -263,6 +277,10 @@ class IndexController {
     return ungroupedJobs;
   }
 
+  /**
+   * getFirstExistingJob
+   * @param {*} inJobs
+   */
   getFirstExistingJob(inJobs) {
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       if (typeof inJobs[i] != "undefined") {
@@ -271,6 +289,11 @@ class IndexController {
     }
   }
 
+  /**
+   * findShortestPathObj
+   * @param {*} jobObj
+   * @param {*} shortest
+   */
   findShortestPathObj(jobObj, shortest) {
     var singleJobObj = jobObj[1];
 
@@ -294,6 +317,10 @@ class IndexController {
     return singleJobObj;
   }
 
+  /**
+   * calculateSingleJobDistance
+   * @param {*} singleJobObj
+   */
   calculateSingleJobDistance(singleJobObj) {
     var slotsInLane = grid.getSlotsInLane();
     var costTraversing = 0.1;
@@ -318,6 +345,10 @@ class IndexController {
     return distance.toFixed(1);
   }
 
+  /**
+   * processData
+   * @param {*} allText
+   */
   processData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(",");

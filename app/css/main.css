@@ -55,7 +55,6 @@ div.waypoint {
 .grid-container {
   display: inline-block;
   position: absolute;
-  offset-before: 100px;
 }
 
 .slot-nr {
