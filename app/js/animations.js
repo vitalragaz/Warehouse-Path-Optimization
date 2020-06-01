@@ -10,19 +10,16 @@ var animations = function(inJobs) {
     currentDirection = "up",
     lastWaypoint = null,
     lastItem = null,
-    unsortedItemQueue = [],
     itemQueue = [],
     waypointQueue = [],
     walkSpeed = 250;
 
   var reset = function() {
     hideItems(itemQueue);
-    hideItems(unsortedItemQueue);
 
     currentDirection = "up";
     lastWaypoint = null;
     lastItem = null;
-    unsortedItemQueue = [];
     itemQueue = [];
     waypointQueue = [];
 
@@ -44,17 +41,10 @@ var animations = function(inJobs) {
     });
   };
 
-  var animateJobGroup = function(jobGroup) {
+  var animateJob = function(jobItems) {
     reset();
 
-    for (var j = 1; j <= Object.keys(jobGroup).length; j++) {
-      jobGroup[j].items.forEach(function(selected) {
-        unsortedItemQueue.push(parseInt(selected));
-      });
-    }
-
-    sortItemQueue(unsortedItemQueue);
-
+    itemQueue = jobItems;
     console.log(itemQueue);
     console.log("Items in animation queue aufgenommen: " + itemQueue);
 
@@ -67,39 +57,6 @@ var animations = function(inJobs) {
     showItems(itemQueue);
     animateNextAction();
   };
-
-  function sortItemQueue(unsortedItemQueue) {
-    var slotsInLane = grid.getSlotsInLane(),
-      upMovement = true;
-
-    for (var lane = 1; lane <= lanes; lane++) {
-      var laneQueue = [];
-
-      unsortedItemQueue.forEach(function(item) {
-        if (lane * slotsInLane >= item && item > lane * slotsInLane - slotsInLane) {
-          laneQueue.push(item);
-        }
-      });
-
-      if (laneQueue.length > 0) {
-        if (upMovement) {
-          laneQueue.sort(function(a, b) {
-            return b - a;
-          });
-          upMovement = false;
-        } else {
-          laneQueue.sort(function(a, b) {
-            return a - b;
-          });
-          upMovement = true;
-        }
-
-        laneQueue.forEach(function(item) {
-          itemQueue.push(item);
-        });
-      }
-    }
-  }
 
   function showItems(items) {
     for (var i = 0; i < items.length; i++) {
@@ -246,6 +203,6 @@ var animations = function(inJobs) {
 
   window.setTimeout(function() {
     initPosition();
-    animateJobGroup(inJobs);
+    animateJob(inJobs);
   }, 1000);
 };
