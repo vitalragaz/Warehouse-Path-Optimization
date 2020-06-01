@@ -15,10 +15,6 @@ var animations = function(inJobs) {
     waypointQueue = [],
     walkSpeed = 250;
 
-  move.defaults = {
-    duration: 800
-  };
-
   var reset = function() {
     hideItems(itemQueue);
     hideItems(unsortedItemQueue);
@@ -189,21 +185,21 @@ var animations = function(inJobs) {
     function moveRightBy(pixels) {
       move(robot)
         .add("margin-left", pixels)
-        .duration(walkSpeed * (pixels / grid.getSlotPixelSize()))
+        .duration(getWalkerSpeedByPixels(pixels))
         .end(triggerNextAnimation);
     }
 
     function moveDownBy(pixels) {
       move(robot)
         .add("margin-top", pixels)
-        .duration(walkSpeed * (pixels / grid.getSlotPixelSize()))
+        .duration(getWalkerSpeedByPixels(pixels))
         .end(triggerNextAnimation);
     }
 
     function moveUpBy(pixels) {
       move(robot)
         .sub("margin-top", pixels)
-        .duration(walkSpeed * (pixels / grid.getSlotPixelSize()))
+        .duration(getWalkerSpeedByPixels(pixels))
         .end(triggerNextAnimation);
     }
   };
@@ -214,14 +210,18 @@ var animations = function(inJobs) {
       offsetRight = $robot.offset().left - ($lastWaypointInFirstLane.offset().left - 2 * slotSize),
       moveLeft = move(robot)
         .sub("margin-left", offsetRight)
-        .duration(walkSpeed * (offsetRight / grid.getSlotPixelSize()))
+        .duration(getWalkerSpeedByPixels(offsetRight))
         .then(callback);
 
     move(robot)
       .add("margin-top", offsetBottom)
-      .duration(walkSpeed * (offsetBottom / grid.getSlotPixelSize()))
+      .duration(getWalkerSpeedByPixels(offsetBottom))
       .then(moveLeft)
       .end();
+  }
+
+  function getWalkerSpeedByPixels(pixels) {
+    return walkSpeed * Math.ceil(pixels / grid.getSlotPixelSize());
   }
 
   function animateNextAction() {
