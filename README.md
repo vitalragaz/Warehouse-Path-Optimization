@@ -11,8 +11,8 @@ The project can be run by doing the following steps:
 
 * Clone the repository localy
 * Install the required packages with `npm i`
-* Spin up the wheel with `npm run babel-transpile` 
-* Open the `app/index.html` in a ES6 compatible browser
+* Spin up the wheel with `npm run start` 
+* Open the `localhost:3000` in a ES6 compatible browser
 
 # Credits
 This repository is based on the work from Flur3x:
