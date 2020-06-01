@@ -47,12 +47,46 @@ class IndexController {
   }
 
   /**
-   * calculateJobDistance
+   * calculate
    */
   calculate() {
     this.jobObj = this.processData(document.getElementById("job-container").value);
 
+    this.sortItemQueueByNearestDistance();
+
     this.printTable();
+  }
+
+  sortItemQueueByNearestDistance() {
+    for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
+      let job = this.jobObj[i];
+      let processArr = [];
+      console.log("=====");
+      job.items.forEach(item => {
+        var $wpPosition = $("#waypoint-" + item).position();
+        processArr.push({ item: item, p: new Point($wpPosition.left, $wpPosition.top) });
+      });
+      console.log(processArr);
+      var solution = solve(processArr.map(m => m.p));
+
+      var ordered_points = solution.map(i => processArr[i]);
+
+      console.log(ordered_points);
+      job.items = ordered_points.map(m => m.item);
+      let a = grid.getSlotPixelSize(),
+        b = grid.getSlotPixelSize(),
+        y = grid.getSlotPixelSize() * 2;
+
+      // a = depth of a cell
+      // b = width of a cell
+      // y = with of an aisle
+      // z = side number
+      // S = number of sections
+      // x = aisle number
+      // y = slot number
+
+      //  job.items;
+    }
   }
 
   /**
@@ -93,9 +127,6 @@ class IndexController {
       for (var j = 0; j < data.length; j++) {
         if (headers[j].search("item") != -1) {
           tarr["items"].push(data[j]);
-          tarr["items"].sort(function(a, b) {
-            return a - b;
-          });
         } else {
           tarr[headers[j]] = data[j];
         }

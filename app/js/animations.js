@@ -107,7 +107,7 @@ var animations = function(inJobs) {
         robotOffsetTop = $robot.offset().top,
         isInOffsetRow = rowOffsetTop >= robotOffsetTop || rowOffsetBottom <= robotOffsetTop;
 
-      if (!movedToLane && wpOffsetLeft > robotOffsetLeft) {
+      if ((!movedToLane && wpOffsetLeft > robotOffsetLeft) || wpOffsetLeft < robotOffsetLeft) {
         switchLane();
       } else if (!movedToSlot && wpOffsetTop < robotOffsetTop) {
         moveUpBy(robotOffsetTop - wpOffsetTop);
@@ -126,12 +126,18 @@ var animations = function(inJobs) {
         if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetLeft - robotOffsetLeft == 45)) {
           moveRightBy(wpOffsetLeft - robotOffsetLeft);
           movedToLane = true;
+        } else if (!movedToOffsetRow && (!isInOffsetRow && robotOffsetLeft - wpOffsetLeft == 45)) {
+          moveLeftBy(robotOffsetLeft - wpOffsetLeft);
+          movedToLane = true;
         } else if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetTop > rowOffsetBottom / 2)) {
           moveDownBy(rowOffsetBottom - robotOffsetTop);
           movedToOffsetRow = true;
         } else if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetTop < rowOffsetBottom / 2)) {
           moveUpBy(robotOffsetTop - rowOffsetTop);
           movedToOffsetRow = true;
+        } else if (robotOffsetLeft > wpOffsetLeft) {
+          moveLeftBy(robotOffsetLeft - wpOffsetLeft);
+          movedToLane = true;
         } else {
           moveRightBy(wpOffsetLeft - robotOffsetLeft);
           movedToLane = true;
@@ -142,6 +148,13 @@ var animations = function(inJobs) {
     function moveRightBy(pixels) {
       move(robot)
         .add("margin-left", pixels)
+        .duration(getWalkerSpeedByPixels(pixels))
+        .end(triggerNextAnimation);
+    }
+
+    function moveLeftBy(pixels) {
+      move(robot)
+        .sub("margin-left", pixels)
         .duration(getWalkerSpeedByPixels(pixels))
         .end(triggerNextAnimation);
     }
