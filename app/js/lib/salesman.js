@@ -54,7 +54,8 @@ Salesman.prototype.solve = function() {
     for (var i = 0; i < unvisited.length; i++) {
       //make sure they're not the same
       if (item != unvisited[i]) {
-        var d = getDistance(item, unvisited[i]);
+        var d = Math.abs(getDistance(item, unvisited[i]));
+        console.log("Comparing: " + item + " with " + unvisited[i] + " -> " + d);
         if (d <= shortestDistance) {
           shortestDistance = d;
           nearest = unvisited[i];
