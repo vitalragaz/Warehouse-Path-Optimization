@@ -12,7 +12,7 @@ var animations = function(inJobs) {
     lastItem = null,
     itemQueue = [],
     waypointQueue = [],
-    walkSpeed = 250;
+    walkSpeed = 100;
 
   var reset = function() {
     hideItems(itemQueue);
@@ -129,10 +129,18 @@ var animations = function(inJobs) {
         } else if (!movedToOffsetRow && (!isInOffsetRow && robotOffsetLeft - wpOffsetLeft == 45)) {
           moveLeftBy(robotOffsetLeft - wpOffsetLeft);
           movedToLane = true;
-        } else if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetTop > rowOffsetBottom / 2)) {
+        } else if (
+          !movedToOffsetRow &&
+          (!isInOffsetRow &&
+            robotOffsetTop + wpOffsetTop > rowOffsetBottom - robotOffsetTop + (rowOffsetBottom - wpOffsetTop))
+        ) {
           moveDownBy(rowOffsetBottom - robotOffsetTop);
           movedToOffsetRow = true;
-        } else if (!movedToOffsetRow && (!isInOffsetRow && wpOffsetTop < rowOffsetBottom / 2)) {
+        } else if (
+          !movedToOffsetRow &&
+          (!isInOffsetRow &&
+            robotOffsetTop + wpOffsetTop < rowOffsetBottom - robotOffsetTop + (rowOffsetBottom - wpOffsetTop))
+        ) {
           moveUpBy(robotOffsetTop - rowOffsetTop);
           movedToOffsetRow = true;
         } else if (robotOffsetLeft > wpOffsetLeft) {
