@@ -60,35 +60,13 @@ class IndexController {
   sortItemQueueByNearestDistance() {
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       let job = this.jobObj[i];
-      let processArr = [];
       console.log("=====");
-      job.items.forEach(item => {
-        var $wpPosition = $("#waypoint-" + item).position();
-        processArr.push({ item: item, p: { x: $wpPosition.left, y: $wpPosition.top } });
-      });
-      console.log(processArr);
-
-      var sm = new Salesman(processArr.map(m => m.p));
+      var sm = new Salesman(job.items);
 
       var solution = sm.solve();
       console.log(solution);
-      var ordered_points = solution.map(i => processArr.find(m => m.p.x == i.x && m.p.y == i.y));
 
-      console.log(ordered_points);
-      job.items = ordered_points.map(m => m.item);
-      /*let a = grid.getSlotPixelSize(),
-        b = grid.getSlotPixelSize(),
-        y = grid.getSlotPixelSize() * 2;
-*/
-      // a = depth of a cell
-      // b = width of a cell
-      // y = with of an aisle
-      // z = side number
-      // S = number of sections
-      // x = aisle number
-      // y = slot number
-
-      //  job.items;
+      job.items = solution;
     }
   }
 
