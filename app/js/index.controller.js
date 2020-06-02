@@ -36,10 +36,15 @@ class IndexController {
 
     for (var i = 1; i <= 5; i++) {
       generatedData += "customer" + i + ",";
-
+      let numberArr = [];
       for (var j = 0; j < itemCount; j++) {
-        generatedData += Math.round(Math.random() * (grid.getSlotsInLane() * grid.getLanes() - 1)) + ",";
+        var number = Math.round(Math.random() * (grid.getSlotsInLane() * grid.getLanes() - 1));
+        if (number == 0) {
+          number = 1;
+        }
+        if (!numberArr.includes(number)) numberArr.push(number);
       }
+      generatedData += numberArr.join(",");
       generatedData = generatedData.substring(0, generatedData.length - 1) + "\n";
     }
     generatedData = generatedData.substring(0, generatedData.length - 1);

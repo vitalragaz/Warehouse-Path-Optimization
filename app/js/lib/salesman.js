@@ -3,7 +3,7 @@
  */
 
 function Salesman(items) {
-  this.items = items;
+  this.items = items.sort((a, b) => a - b);
 }
 
 Salesman.prototype.solve = function() {
@@ -26,7 +26,7 @@ Salesman.prototype.solve = function() {
 
     // Variable: z
     let z_item1 = (Math.floor((item1 - 1) / grid.getSlotsInLane()) + 1) % 2 == 0 ? 2 : 1;
-    let z_item2 = (Math.floor((item1 - 1) / grid.getSlotsInLane()) + 1) % 2 == 0 ? 2 : 1;
+    let z_item2 = (Math.floor((item2 - 1) / grid.getSlotsInLane()) + 1) % 2 == 0 ? 2 : 1;
 
     // Variable: v
     let v_verticalDistance =
@@ -34,9 +34,9 @@ Salesman.prototype.solve = function() {
 
     // check if product is in same aisle
     if (x_item1 == x_item2) {
-      return (y_item1 - y_item2) * b_depthOfCell + (z_item1 - z_item2) * yy_widthOfAisle;
+      return Math.abs(y_item1 - y_item2) * b_depthOfCell + Math.abs(z_item1 - z_item2) * yy_widthOfAisle;
     } else if (z_item1 == z_item2) {
-      return (x_item1 - x_item2) * (2 * a_widthOfCell + yy_widthOfAisle) + v_verticalDistance;
+      return Math.abs(x_item1 - x_item2) * (2 * a_widthOfCell + yy_widthOfAisle) + v_verticalDistance;
     } else if (z_item1 == 1 && z_item2 == 2) {
       return (x_item2 - x_item1) * (2 * a_widthOfCell + yy_widthOfAisle) + yy_widthOfAisle + v_verticalDistance;
     } else if (z_item1 == 2 && z_item2 == 1) {
@@ -54,9 +54,10 @@ Salesman.prototype.solve = function() {
     for (var i = 0; i < unvisited.length; i++) {
       //make sure they're not the same
       if (item != unvisited[i]) {
-        var d = Math.abs(getDistance(item, unvisited[i]));
+        var d = getDistance(item, unvisited[i]);
         console.log("Comparing: " + item + " with " + unvisited[i] + " -> " + d);
-        if (d <= shortestDistance) {
+
+        if (d < shortestDistance) {
           shortestDistance = d;
           nearest = unvisited[i];
           nearestIndex = i;
