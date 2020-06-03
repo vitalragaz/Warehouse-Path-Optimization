@@ -1,9 +1,25 @@
 /**
- * Based on: https://codepen.io/kristenwebster/pen/RoZZYr
+ * Based on [7]
+ * @param {*} items
  */
-
 function Salesman(items) {
   this.items = items.sort((a, b) => a - b);
+
+  // If we have an element within the first aisle
+  // sort them according to distance
+  let nearestArr = this.items.filter(m => m <= 28);
+  if (nearestArr.length) {
+    let nearestOffset = 0;
+    nearestArr.forEach(element => {
+      let offsetTop = $("#waypoint-" + element).position().top;
+      if (offsetTop > nearestOffset) {
+        nearestOffset = offsetTop;
+        let elIndex = this.items.findIndex(e => e == element);
+        this.items.splice(elIndex, 1);
+        this.items.unshift(element);
+      }
+    });
+  }
 }
 
 Salesman.prototype.solve = function() {
