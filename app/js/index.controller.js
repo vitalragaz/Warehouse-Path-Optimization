@@ -48,17 +48,16 @@ class IndexController {
       // given range
       while (unique_random_numbers.length < limit) {
         var random_number = Math.floor(Math.random() * (upper_bound - lower_bound) + lower_bound);
-        if (unique_random_numbers.indexOf(random_number) == -1) {
+        if (unique_random_numbers.indexOf(random_number) == -1 && random_number > 0) {
           // Yay! new random number
           unique_random_numbers.push(random_number);
         }
       }
 
       generatedData += unique_random_numbers.join(",");
-      generatedData = generatedData.substring(0, generatedData.length - 1) + "\n";
+      generatedData += "\n";
     }
-    generatedData = generatedData.substring(0, generatedData.length - 1);
-    document.getElementById("job-container").value = generatedData;
+    document.getElementById("job-container").value = generatedData.trim();
   }
 
   /**

@@ -12,11 +12,14 @@ var animations = function(inJobs) {
     lastItem = null,
     itemQueue = [],
     waypointQueue = [],
-    walkSpeed = 100;
+    walkSpeed = 100,
+    canvas = document.querySelector("#pathTracer"),
+    ctx = canvas.getContext("2d");
 
   var reset = function() {
     hideItems(itemQueue);
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     currentDirection = "up";
     lastWaypoint = null;
     lastItem = null;
@@ -75,6 +78,7 @@ var animations = function(inJobs) {
       callback();
     } else {
       lastItem = itemNr;
+      tracePick();
       move("#item-" + itemNr)
         .set("opacity", "0")
         .duration("0.3s")
@@ -154,6 +158,7 @@ var animations = function(inJobs) {
     }
 
     function moveRightBy(pixels) {
+      tracePath(pixels, "right");
       move(robot)
         .add("margin-left", pixels)
         .duration(getWalkerSpeedByPixels(pixels))
@@ -161,6 +166,7 @@ var animations = function(inJobs) {
     }
 
     function moveLeftBy(pixels) {
+      tracePath(pixels, "left");
       move(robot)
         .sub("margin-left", pixels)
         .duration(getWalkerSpeedByPixels(pixels))
@@ -168,6 +174,7 @@ var animations = function(inJobs) {
     }
 
     function moveDownBy(pixels) {
+      tracePath(pixels, "down");
       move(robot)
         .add("margin-top", pixels)
         .duration(getWalkerSpeedByPixels(pixels))
@@ -175,12 +182,72 @@ var animations = function(inJobs) {
     }
 
     function moveUpBy(pixels) {
+      tracePath(pixels, "up");
       move(robot)
         .sub("margin-top", pixels)
         .duration(getWalkerSpeedByPixels(pixels))
         .end(triggerNextAnimation);
     }
   };
+
+  function tracePick() {
+    if ($("#cbTracePath").is(":checked")) {
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "green";
+      let rby = parseInt(
+        $("#robot")
+          .css("marginTop")
+          .replace("px", "")
+      );
+      let rbx = parseInt(
+        $("#robot")
+          .css("marginLeft")
+          .replace("px", "")
+      );
+      ctx.globalAlpha = 0.2;
+      ctx.fillRect(rbx, rby, 40, 40); // fill in the pixel at (10,10)
+      ctx.globalAlpha = 1.0;
+      ctx.stroke();
+    }
+  }
+
+  function tracePath(distance, direction) {
+    if ($("#cbTracePath").is(":checked")) {
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "green";
+      let rby = parseInt(
+        $("#robot")
+          .css("marginTop")
+          .replace("px", "")
+      );
+      let rbx = parseInt(
+        $("#robot")
+          .css("marginLeft")
+          .replace("px", "")
+      );
+
+      // Current Position of robot
+      ctx.moveTo(rbx, rby);
+
+      // distance position of robot
+      switch (direction) {
+        case "right":
+          ctx.lineTo(rbx + distance, rby);
+          break;
+        case "left":
+          ctx.lineTo(rbx - distance, rby);
+        case "up":
+          ctx.lineTo(rbx, rby - distance);
+        case "down":
+          ctx.lineTo(rbx, rby + distance);
+        default:
+          break;
+      }
+      ctx.stroke();
+    }
+  }
 
   function moveToEnd(callback) {
     var $lastWaypointInFirstLane = $("#waypoint-" + grid.getSlotsInLane()),
@@ -191,6 +258,10 @@ var animations = function(inJobs) {
         .duration(getWalkerSpeedByPixels(offsetRight))
         .then(callback);
 
+    // Trace Path
+    tracePath(offsetBottom, "down");
+
+    // Fire Move
     move(robot)
       .add("margin-top", offsetBottom)
       .duration(getWalkerSpeedByPixels(offsetBottom))

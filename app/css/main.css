@@ -54,10 +54,17 @@ div.waypoint {
 
 .grid-container {
   display: inline-block;
-  position: absolute;
+  position: relative;
   margin: 0px 30px;
 }
 
 .slot-nr {
   padding: 5px 0 0 2px;
+}
+
+canvas#pathTracer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
 }
