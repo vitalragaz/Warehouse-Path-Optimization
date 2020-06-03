@@ -64,7 +64,7 @@ class IndexController {
    * calculate
    */
   calculate() {
-    this.jobObj = this.processData(document.getElementById("job-container").value);
+    this.jobObj = this.processData(document.getElementById("job-container").value.trim());
 
     this.sortItemQueueByNearestDistance();
 
