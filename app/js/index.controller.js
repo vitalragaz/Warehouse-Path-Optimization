@@ -36,15 +36,25 @@ class IndexController {
 
     for (var i = 1; i <= 5; i++) {
       generatedData += "customer" + i + ",";
-      let numberArr = [];
-      for (var j = 0; j < itemCount; j++) {
-        var number = Math.round(Math.random() * (grid.getSlotsInLane() * grid.getLanes() - 1));
-        if (number == 0) {
-          number = 1;
+
+      var limit = itemCount,
+        amount = itemCount,
+        lower_bound = 1,
+        upper_bound = grid.getSlotsInLane() * grid.getLanes(),
+        unique_random_numbers = [];
+
+      if (amount > limit) limit = amount; //Infinite loop if you want more unique
+      //Natural numbers than exist in a
+      // given range
+      while (unique_random_numbers.length < limit) {
+        var random_number = Math.floor(Math.random() * (upper_bound - lower_bound) + lower_bound);
+        if (unique_random_numbers.indexOf(random_number) == -1) {
+          // Yay! new random number
+          unique_random_numbers.push(random_number);
         }
-        if (!numberArr.includes(number)) numberArr.push(number);
       }
-      generatedData += numberArr.join(",");
+
+      generatedData += unique_random_numbers.join(",");
       generatedData = generatedData.substring(0, generatedData.length - 1) + "\n";
     }
     generatedData = generatedData.substring(0, generatedData.length - 1);

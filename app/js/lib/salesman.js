@@ -29,8 +29,7 @@ Salesman.prototype.solve = function() {
     let z_item2 = (Math.floor((item2 - 1) / grid.getSlotsInLane()) + 1) % 2 == 0 ? 2 : 1;
 
     // Variable: v
-    let v_verticalDistance =
-      Math.min(b_depthOfCell * (2 - y_item1 - y_item2), b_depthOfCell * (y_item1 + y_item2)) + 2 * o_turningRadius;
+    let v_verticalDistance = b_depthOfCell * Math.abs(y_item1 - y_item2) + 2 * o_turningRadius;
 
     // check if product is in same aisle
     if (x_item1 == x_item2) {
