@@ -74,13 +74,25 @@ class IndexController {
   sortItemQueueByNearestDistance() {
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       let job = this.jobObj[i];
-      console.log("=====");
+      // transform to ant required array
+      let antArr = job.items.map(m => {
+        var wpPosition = $("#waypoint-" + m).position();
+        return { id: m, position: [wpPosition.left, wpPosition.top] };
+      });
+
+      // Fire Shortest Distance
       var sm = new Salesman(job.items);
+      job.sdItems = sm.solve();
 
-      var solution = sm.solve();
-      console.log(solution);
-
-      job.items = solution;
+      // Fire ACO
+      const maxIt = 300;
+      const numAnts = 30;
+      const decay = 0.1;
+      const cHeur = 2.5;
+      const cLocalPhero = 0.1;
+      const cGreed = 0.9;
+      const best = acoSolve(antArr.map(m => m.position), maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed);
+      job.acoItems = best.vector.map(i => antArr[i].id);
     }
   }
 
@@ -88,15 +100,34 @@ class IndexController {
    * printTable
    */
   printTable() {
-    let tableContent = "<table>" + "<tr>" + "<td>Id</td>" + "<td>Name</td>" + "<td>Items</td>" + "</tr>\n";
+    let tableContent =
+      "<table>" + "<tr>" + "<td>Id</td>" + "<td>Name</td>" + "<td>Sd Items</td>" + "<td>ACO Items</td>" + "</tr>\n";
 
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       let job = this.jobObj[i];
 
-      tableContent += "<tr>" + "<td>" + i + "</td>" + "<td>" + job.name + "</td>" + "<td>" + job.items + "</td>";
+      tableContent +=
+        "<tr>" +
+        "<td>" +
+        i +
+        "</td>" +
+        "<td>" +
+        job.name +
+        "</td>" +
+        "<td>" +
+        job.sdItems +
+        "</td>" +
+        "<td>" +
+        job.acoItems +
+        "</td>";
 
       tableContent +=
-        '<td><input type="Button" value="start" onclick="new animations([' + job.items + '])"))"></input></td>';
+        '<td><input type="Button" value="start SD" onclick="new animations([' +
+        job.sdItems +
+        '])"))"></input></td>' +
+        '<td><input type="Button" value="start ACO" onclick="new animations([' +
+        job.acoItems +
+        '])"))"></input></td>';
 
       tableContent += "</tr>";
     }
