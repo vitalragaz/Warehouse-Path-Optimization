@@ -91,6 +91,10 @@ class IndexController {
       var sm = new Salesman(job.items);
       job.sdItems = sm.solve();
       job.sdExecTime = (performance.now() - t0).toFixed(2) + " ms";
+      // Calculate the picking time and respect that a picker needs 10s per picking
+      job.sdPickingTime = formatSeconds(
+        (this.calculatePathDistance(job.sdItems) / grid.getSlotPixelSize()).toFixed(2) + job.sdItems.length * 10
+      );
 
       // Fire ACO
       t0 = performance.now();
@@ -103,7 +107,21 @@ class IndexController {
       const best = acoSolve(antArr.map(m => m.position), maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed);
       job.acoItems = best.vector.map(i => antArr[i].id);
       job.acoExecTime = (performance.now() - t0).toFixed(2) + " ms";
+      // Calculate the picking time and respect that a picker needs 10s per picking
+      job.acoPickingTime = formatSeconds(
+        (this.calculatePathDistance(job.acoItems) / 42).toFixed(2) + job.acoItems.length * 10
+      );
     }
+  }
+
+  calculatePathDistance(arr) {
+    let retVal = 0;
+    for (let index = 0; index < arr.length - 1; index++) {
+      var item1 = arr[index];
+      var item2 = arr[index + 1];
+      retVal += getDistance(item1, item2);
+    }
+    return retVal;
   }
 
   /**
@@ -116,11 +134,11 @@ class IndexController {
       "<tr>" +
       "<th>Name</th>" +
       "<th>Shortest Distance</th>" +
-      "<th>cT</th>" +
-      "<th>pT</th>" +
+      "<th>Computing Time</th>" +
+      "<th>Picking Time</th>" +
       "<th>Ant Colony Optimization</th>" +
-      "<th>cT</th>" +
-      "<th>pT</th>" +
+      "<th>Computing Time</th>" +
+      "<th>Picking Time</th>" +
       "<th>Actions</th>" +
       "</tr></thead>\n";
 
@@ -138,14 +156,18 @@ class IndexController {
         "<td>" +
         job.sdExecTime +
         "</td>" +
-        "<td></td>" +
+        "<td>" +
+        job.sdPickingTime +
+        "</td>" +
         "<td>" +
         job.acoItems +
         "</td>" +
         "<td>" +
         job.acoExecTime +
         "</td>" +
-        "<td></td>";
+        "<td>" +
+        job.acoPickingTime +
+        "</td>";
 
       tableContent +=
         '<td><input type="Button" value="Simulate SD" onclick="new animations([' +

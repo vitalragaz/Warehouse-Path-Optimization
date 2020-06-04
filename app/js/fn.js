@@ -30,3 +30,7 @@ let getDistance = function(item1, item2) {
     return (x_item2 - x_item1) * (2 * a_widthOfCell + yy_widthOfAisle) - yy_widthOfAisle + v_verticalDistance;
   }
 };
+
+let formatSeconds = function(seconds) {
+  return new Date(seconds * 1000).toISOString().substr(11, 8);
+};
