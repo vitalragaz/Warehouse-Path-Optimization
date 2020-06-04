@@ -87,10 +87,13 @@ class IndexController {
       });
 
       // Fire Shortest Distance
+      var t0 = performance.now();
       var sm = new Salesman(job.items);
       job.sdItems = sm.solve();
+      job.sdExecTime = (performance.now() - t0).toFixed(2) + " ms";
 
       // Fire ACO
+      t0 = performance.now();
       const maxIt = 100;
       const numAnts = 10;
       const decay = 0.1;
@@ -99,6 +102,7 @@ class IndexController {
       const cGreed = 0.9;
       const best = acoSolve(antArr.map(m => m.position), maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed);
       job.acoItems = best.vector.map(i => antArr[i].id);
+      job.acoExecTime = (performance.now() - t0).toFixed(2) + " ms";
     }
   }
 
@@ -111,8 +115,12 @@ class IndexController {
       "<thead>" +
       "<tr>" +
       "<th>Name</th>" +
-      "<th>Sd Items</th>" +
-      "<th>ACO Items</th>" +
+      "<th>Shortest Distance</th>" +
+      "<th>cT</th>" +
+      "<th>pT</th>" +
+      "<th>Ant Colony Optimization</th>" +
+      "<th>cT</th>" +
+      "<th>pT</th>" +
       "<th>Actions</th>" +
       "</tr></thead>\n";
 
@@ -120,13 +128,30 @@ class IndexController {
       let job = this.jobObj[i];
 
       tableContent +=
-        "<tr>" + "<td>" + job.name + "</td>" + "<td>" + job.sdItems + "</td>" + "<td>" + job.acoItems + "</td>";
+        "<tr>" +
+        "<td>" +
+        job.name +
+        "</td>" +
+        "<td>" +
+        job.sdItems +
+        "</td>" +
+        "<td>" +
+        job.sdExecTime +
+        "</td>" +
+        "<td></td>" +
+        "<td>" +
+        job.acoItems +
+        "</td>" +
+        "<td>" +
+        job.acoExecTime +
+        "</td>" +
+        "<td></td>";
 
       tableContent +=
-        '<td><input type="Button" value="start SD" onclick="new animations([' +
+        '<td><input type="Button" value="Simulate SD" onclick="new animations([' +
         job.sdItems +
-        '])"))"></input>' +
-        '<input type="Button" value="start ACO" class="ml-2 mt-0" onclick="new animations([' +
+        '])"))"></input> <br />' +
+        '<input type="Button" value="Simulate ACO" class="mt-2" onclick="new animations([' +
         job.acoItems +
         '])"))"></input></td>';
 
