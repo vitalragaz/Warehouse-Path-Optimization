@@ -34,7 +34,7 @@ class IndexController {
     for (var i = 1; i <= itemCount; i++) heroNames.push("item" + i);
     var generatedData = "name," + heroNames.join(",") + "\n";
 
-    for (var i = 1; i <= 5; i++) {
+    for (var i = 1; i <= 1; i++) {
       generatedData += "customer" + i + ",";
 
       var limit = itemCount,
@@ -64,11 +64,17 @@ class IndexController {
    * calculate
    */
   calculate() {
-    this.jobObj = this.processData(document.getElementById("job-container").value.trim());
+    $("#btnCalculate").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Calculating...'
+    );
 
-    this.sortItemQueueByNearestDistance();
-
-    this.printTable();
+    // Deferer Function
+    setTimeout(() => {
+      this.jobObj = this.processData(document.getElementById("job-container").value.trim());
+      this.sortItemQueueByNearestDistance();
+      this.printTable();
+      $("#btnCalculate").html("Calculate");
+    }, 300);
   }
 
   sortItemQueueByNearestDistance() {
@@ -85,8 +91,8 @@ class IndexController {
       job.sdItems = sm.solve();
 
       // Fire ACO
-      const maxIt = 300;
-      const numAnts = 30;
+      const maxIt = 100;
+      const numAnts = 10;
       const decay = 0.1;
       const cHeur = 2.5;
       const cLocalPhero = 0.1;
@@ -101,31 +107,26 @@ class IndexController {
    */
   printTable() {
     let tableContent =
-      "<table>" + "<tr>" + "<td>Id</td>" + "<td>Name</td>" + "<td>Sd Items</td>" + "<td>ACO Items</td>" + "</tr>\n";
+      '<table class="table resultTable">' +
+      "<thead>" +
+      "<tr>" +
+      "<th>Name</th>" +
+      "<th>Sd Items</th>" +
+      "<th>ACO Items</th>" +
+      "<th>Actions</th>" +
+      "</tr></thead>\n";
 
     for (var i = 1; i <= Object.keys(this.jobObj).length; i++) {
       let job = this.jobObj[i];
 
       tableContent +=
-        "<tr>" +
-        "<td>" +
-        i +
-        "</td>" +
-        "<td>" +
-        job.name +
-        "</td>" +
-        "<td>" +
-        job.sdItems +
-        "</td>" +
-        "<td>" +
-        job.acoItems +
-        "</td>";
+        "<tr>" + "<td>" + job.name + "</td>" + "<td>" + job.sdItems + "</td>" + "<td>" + job.acoItems + "</td>";
 
       tableContent +=
         '<td><input type="Button" value="start SD" onclick="new animations([' +
         job.sdItems +
-        '])"))"></input></td>' +
-        '<td><input type="Button" value="start ACO" onclick="new animations([' +
+        '])"))"></input>' +
+        '<input type="Button" value="start ACO" class="ml-2 mt-0" onclick="new animations([' +
         job.acoItems +
         '])"))"></input></td>';
 

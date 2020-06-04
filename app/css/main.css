@@ -42,6 +42,16 @@ div.waypoint {
 #optimizedJobTable {
 }
 
+table.resultTable {
+  table-layout: fixed;
+  width: 100%;
+}
+
+table.resultTable td {
+  word-wrap: break-word; /* All browsers since IE 5.5+ */
+  overflow-wrap: break-word; /* Renamed property in CSS3 draft spec */
+}
+
 .main-container {
   margin: 20px;
   text-align: left;

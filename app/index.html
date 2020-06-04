@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <script type="text/javascript" src="js/lib/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" defer src="js/lib/move.min.js"></script>
     <script type="text/javascript" src="js/grid.js"></script>
     <script type="text/javascript" src="js/animations.js"></script>
     <script type="text/javascript" src="js/lib/salesman.js"></script>
     <script type="text/javascript" src="js/lib/aco.js"></script>
     <script type="text/javascript" src="lib/index.controller.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/main.css" />
     <title>A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization</title>
   </head>
@@ -16,7 +18,22 @@
     <script>
       $(document).ready(function() {
         grid.render();
-        indexController.generateJobs()
+        indexController.generateJobs();
+
+
+        $("#jobGenerateNumberOfItems").keydown(function () {
+        // Save old value.
+        if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= 0))
+          $(this).data("old", $(this).val());
+        });
+        $("#jobGenerateNumberOfItems").keyup(function () {
+          // Check correct, else revert back to old value.
+          if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= 0))
+            ;
+          else
+            $(this).val($(this).data("old"));
+        });
+
       });
     </script>
     <div class="main-container">
@@ -39,11 +56,11 @@
               onclick="grid.changeLayout($('#numberLanes').val(),$('#numberSlots').val())"
             />
           </p>
-          <p>
+         <!-- <p>
             <label>
               <input type="checkbox" name="cbTracePath" id="cbTracePath"> TracePath (Experimentall)
             </label>
-          </p>
+          </p> -->
           <br />
 
           <b>2. Generate jobs or read in order file</b><br />
@@ -64,7 +81,7 @@
           <hr />
           <p>
             <textarea id="job-container"></textarea><br />
-            <input type="button" value="Calculate" onclick="indexController.calculate()" /><br />
+            <button type="button" id="btnCalculate" class="btn btn-primary" onclick="indexController.calculate()">Calculate</button><br />
           </p>
         </form>
       </div>

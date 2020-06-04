@@ -6,6 +6,7 @@ Abstract goes here
 ## Setup
 Prerequisite:
 * npm
+* The viewport of the device must be at least 1920x1280
 
 The project can be run by doing the following steps:
 

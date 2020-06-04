@@ -136,5 +136,7 @@ Grid.prototype.render = function() {
         $(".grid-container").width() +
         '" />'
     ).appendTo(".grid-container");
+
+    $("#jobGenerateNumberOfItems").attr("max", grid.getSlotsInLane() * grid.getLanes());
   }
 };
