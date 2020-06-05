@@ -1,4 +1,4 @@
-# A Multi Aisle Warehouse with Many Pickers Traveling Salesmen vs. Ant Colony Optimization 
+# Closest Neighbour Optimization vs. Ant Colony Optimization in a Multi Aisle Warehouse
 
 ## Description
 Abstract goes here
