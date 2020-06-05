@@ -91,26 +91,24 @@ class IndexController {
       var sm = new Salesman(job.items);
       job.sdItems = sm.solve();
       job.sdExecTime = (performance.now() - t0).toFixed(2) + " ms";
+      job.sdDistance = (this.calculatePathDistance(job.sdItems) / grid.getSlotPixelSize()).toFixed(2);
       // Calculate the picking time and respect that a picker needs 10s per picking
-      job.sdPickingTime = formatSeconds(
-        (this.calculatePathDistance(job.sdItems) / grid.getSlotPixelSize()).toFixed(2) + job.sdItems.length * 10
-      );
+      job.sdPickingTime = formatSeconds(job.sdDistance + job.sdItems.length * 10);
 
       // Fire ACO
       t0 = performance.now();
-      const maxIt = 100;
-      const numAnts = 10;
-      const decay = 0.1;
-      const cHeur = 2.5;
-      const cLocalPhero = 0.1;
-      const cGreed = 0.9;
+      let maxIt = $("#acoMaxIt").val();
+      let numAnts = $("#acoNumAnts").val();
+      let decay = $("#acoDecay").val();
+      let cHeur = $("#acocHeur").val();
+      let cLocalPhero = $("#acocLocalPhero").val();
+      let cGreed = $("#acocGreed").val();
       const best = acoSolve(antArr.map(m => m.position), maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed);
       job.acoItems = best.vector.map(i => antArr[i].id);
       job.acoExecTime = (performance.now() - t0).toFixed(2) + " ms";
+      job.acoDistance = (this.calculatePathDistance(job.acoItems) / 42).toFixed(2);
       // Calculate the picking time and respect that a picker needs 10s per picking
-      job.acoPickingTime = formatSeconds(
-        (this.calculatePathDistance(job.acoItems) / 42).toFixed(2) + job.acoItems.length * 10
-      );
+      job.acoPickingTime = formatSeconds(job.acoDistance + job.acoItems.length * 10);
     }
   }
 
@@ -135,9 +133,11 @@ class IndexController {
       "<th>Name</th>" +
       "<th>Shortest Distance</th>" +
       "<th>Computing Time</th>" +
+      "<th>Job Distance</th>" +
       "<th>Picking Time</th>" +
       "<th>Ant Colony Optimization</th>" +
       "<th>Computing Time</th>" +
+      "<th>Job Distance</th>" +
       "<th>Picking Time</th>" +
       "<th>Actions</th>" +
       "</tr></thead>\n";
@@ -157,6 +157,10 @@ class IndexController {
         job.sdExecTime +
         "</td>" +
         "<td>" +
+        job.sdDistance +
+        " m" +
+        "</td>" +
+        "<td>" +
         job.sdPickingTime +
         "</td>" +
         "<td>" +
@@ -164,6 +168,10 @@ class IndexController {
         "</td>" +
         "<td>" +
         job.acoExecTime +
+        "</td>" +
+        "<td>" +
+        job.acoDistance +
+        " m" +
         "</td>" +
         "<td>" +
         job.acoPickingTime +

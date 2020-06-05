@@ -17,22 +17,27 @@
   </head>
   <body>
     <script>
+      var isDebug = false;
       $(document).ready(function() {
         grid.render();
         indexController.generateJobs();
 
 
-        $("#jobGenerateNumberOfItems").keydown(function () {
+        $("input").keydown(function () {
         // Save old value.
-        if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= 0))
-          $(this).data("old", $(this).val());
-        });
-        $("#jobGenerateNumberOfItems").keyup(function () {
-          // Check correct, else revert back to old value.
+        if($(this).attr("max")){
           if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= 0))
-            ;
-          else
-            $(this).val($(this).data("old"));
+            $(this).data("old", $(this).val());
+        }
+        });
+        $("input").keyup(function () {
+          // Check correct, else revert back to old value.
+          if($(this).attr("max")){
+            if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= 0))
+              ;
+            else
+              $(this).val($(this).data("old"));
+          }
         });
 
       });
@@ -62,9 +67,32 @@
               <input type="checkbox" name="cbTracePath" id="cbTracePath"> TracePath (Experimentall)
             </label>
           </p> -->
-          <br />
+         <hr class="mt-4 mb-4">
 
-          <b>2. Generate jobs or read in order file</b><br />
+          <b>2. ACO Configuration</b><br />
+          <p>
+         
+          </p>
+          <p>
+            Max Iterations:
+            <input type="number" id="acoMaxIt" min="1" value="100" max="3000" />
+            Number of Ants (m):
+            <input type="number" id="acoNumAnts" min="1" value="10" max="150" />
+          </p>
+          <p>
+            Decay:
+            <input type="number" id="acoDecay" min="0.1" value="0.1" step="0.1"  max="1"/>
+            Heuristic factor:
+            <input type="number" id="acocHeur" min="0.1" value="2.5" step="0.1" />
+          </p>
+          <p>
+            Local Pheromone:
+            <input type="number" id="acocLocalPhero" min="0.1" value="0.1" step="0.1"  max="1" />
+            Greedy:
+            <input type="number" id="acocGreed" min="0.1" value="0.9" step="0.1"  max="1"/>
+          </p>
+          <hr class="mt-4 mb-4">
+          <b>3. Generate jobs or read in order file</b><br />
           <p>
             <input
               type="file"

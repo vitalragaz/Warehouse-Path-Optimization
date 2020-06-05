@@ -70,7 +70,7 @@ Salesman.prototype.solve = function() {
       //make sure they're not the same
       if (item != unvisited[i]) {
         var d = getDistance(item, unvisited[i]);
-        console.log("Comparing: " + item + " with " + unvisited[i] + " -> " + d);
+        debug("Comparing: " + item + " with " + unvisited[i] + " -> " + d);
 
         if (d < shortestDistance) {
           shortestDistance = d;

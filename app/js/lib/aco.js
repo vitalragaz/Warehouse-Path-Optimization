@@ -132,7 +132,7 @@ function acoSolve(cities, maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed, cb)
       if (cb) {
         cb(best);
       }
-      console.log(`iteration ${iter + 1}, best = ${best.cost}`);
+      debug(`iteration ${iter + 1}, best = ${best.cost}`);
     });
   return best;
 }
