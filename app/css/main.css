@@ -48,9 +48,6 @@ div.waypoint {
   height: 200px;
 }
 
-#optimizedJobTable {
-}
-
 table.resultTable {
   table-layout: fixed;
   width: 100%;
@@ -79,11 +76,4 @@ table.resultTable td {
 
 .slot-nr {
   padding: 5px 0 0 2px;
-}
-
-canvas#pathTracer {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
 }

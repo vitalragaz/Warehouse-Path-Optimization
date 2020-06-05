@@ -97,12 +97,12 @@ class IndexController {
 
       // Fire ACO
       t0 = performance.now();
-      let maxIt = parseInt($("#acoMaxIt").val());
-      let numAnts = parseInt($("#acoNumAnts").val());
-      let decay = parseInt($("#acoDecay").val());
-      let cHeur = parseInt($("#acocHeur").val());
-      let cLocalPhero = parseInt($("#acocLocalPhero").val());
-      let cGreed = parseInt($("#acocGreed").val());
+      const maxIt = 100;
+      const numAnts = 10;
+      const decay = 0.1;
+      const cHeur = 2.5;
+      const cLocalPhero = 0.1;
+      const cGreed = 0.9;
       const best = acoSolve(antArr.map(m => m.position), maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed);
       job.acoItems = best.vector.map(i => antArr[i].id);
       job.acoExecTime = (performance.now() - t0).toFixed(2) + " ms";
@@ -133,11 +133,9 @@ class IndexController {
       "<th>Name</th>" +
       "<th>Shortest Distance</th>" +
       "<th>Computing Time</th>" +
-      "<th>Job Distance</th>" +
       "<th>Picking Time</th>" +
       "<th>Ant Colony Optimization</th>" +
       "<th>Computing Time</th>" +
-      "<th>Job Distance</th>" +
       "<th>Picking Time</th>" +
       "<th>Actions</th>" +
       "</tr></thead>\n";
@@ -157,10 +155,6 @@ class IndexController {
         job.sdExecTime +
         "</td>" +
         "<td>" +
-        job.sdDistance +
-        " m" +
-        "</td>" +
-        "<td>" +
         job.sdPickingTime +
         "</td>" +
         "<td>" +
@@ -168,10 +162,6 @@ class IndexController {
         "</td>" +
         "<td>" +
         job.acoExecTime +
-        "</td>" +
-        "<td>" +
-        job.acoDistance +
-        " m" +
         "</td>" +
         "<td>" +
         job.acoPickingTime +

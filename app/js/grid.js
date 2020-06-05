@@ -124,19 +124,11 @@ Grid.prototype.render = function() {
     // Robot
     $('<div id="robot" />').appendTo(".grid-container");
 
-    // PathTracer
-
+    // Set Size
     $(".grid-container").height(grid.getSlotsInLane() * (size + 3) + size);
     $(".grid-container").width(2 * grid.getLanes() * (size + 3) - 60);
 
-    $(
-      '<canvas id="pathTracer" height="' +
-        $(".grid-container").height() +
-        '" width="' +
-        $(".grid-container").width() +
-        '" />'
-    ).appendTo(".grid-container");
-
+    // Max numberof items
     $("#jobGenerateNumberOfItems").attr("max", grid.getSlotsInLane() * grid.getLanes());
   }
 };
