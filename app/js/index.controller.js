@@ -97,12 +97,12 @@ class IndexController {
 
       // Fire ACO
       t0 = performance.now();
-      let maxIt = $("#acoMaxIt").val();
-      let numAnts = $("#acoNumAnts").val();
-      let decay = $("#acoDecay").val();
-      let cHeur = $("#acocHeur").val();
-      let cLocalPhero = $("#acocLocalPhero").val();
-      let cGreed = $("#acocGreed").val();
+      let maxIt = parseInt($("#acoMaxIt").val());
+      let numAnts = parseInt($("#acoNumAnts").val());
+      let decay = parseInt($("#acoDecay").val());
+      let cHeur = parseInt($("#acocHeur").val());
+      let cLocalPhero = parseInt($("#acocLocalPhero").val());
+      let cGreed = parseInt($("#acocGreed").val());
       const best = acoSolve(antArr.map(m => m.position), maxIt, numAnts, decay, cHeur, cLocalPhero, cGreed);
       job.acoItems = best.vector.map(i => antArr[i].id);
       job.acoExecTime = (performance.now() - t0).toFixed(2) + " ms";
