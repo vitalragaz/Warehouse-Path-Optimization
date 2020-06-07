@@ -1,3 +1,8 @@
+/**
+ * Based on calculation of [7]	E. Zunic, A. Besirevic, R. Skrobo, H. Hasic, K. Hodzic and A. Djedovic, "Design of optimization system for warehouse order picking in real environment," 2017 XXVI International Conference on Information, Communication and Automation Technologies (ICAT), Sarajevo, 2017, pp. 1-6
+ * @param {*} item1
+ * @param {*} item2
+ */
 let getDistance = function(item1, item2) {
   let a_widthOfCell = grid.getSlotPixelSize(),
     b_depthOfCell = grid.getSlotPixelSize(),

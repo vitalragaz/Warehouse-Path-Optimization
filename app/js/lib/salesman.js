@@ -1,7 +1,3 @@
-/**
- * Based on [7]
- * @param {*} items
- */
 function Salesman(items) {
   this.items = items.sort((a, b) => a - b);
 
