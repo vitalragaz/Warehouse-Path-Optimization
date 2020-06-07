@@ -21,7 +21,7 @@ The project can be run by doing the following steps:
 * Install the required packages with `npm i`
 * Build the project with `npm run build` 
 * Spin up the wheel with `npm run start` 
-* Open the `localhost:3000` in a ES6 compatible browser
+* Open  `localhost:3000` in a ES6 compatible browser
 
 
 ## Credits
