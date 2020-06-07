@@ -1,11 +1,11 @@
-# Nearest Distance Optimization vs. Ant Colony Optimi-zation in a Multi Aisle Warehouse
+# Nearest Distance Optimization vs. Ant Colony Optimization in a Multi Aisle Warehouse
 
 ## Description
 Today warehouses and the IT infrastructure behind them ensure within all supply chains a smooth processing of numbers of orders coming in all day long from customers located all over the world. These orders can consist of one item up to hundreds of items. The variety in size ware-houses have today is also not contributing in finding the best optimization method to process all these orders as fast as possible. 
 
 This repo is comparing the nearest distance optimization with the ant colony optimization in the context of weather one or the other is delivering faster picking times in several scenarios depending on the warehouse size ore the number of items on the picking list. 
 
-[Demo](https://imgur.com/3KGu73M)
+![Demo](https://imgur.com/3KGu73M)
 
 ## Setup
 Prerequisite:
