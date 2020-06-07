@@ -5,7 +5,7 @@ Today warehouses and the IT infrastructure behind them ensure within all supply 
 
 This repo is comparing the nearest distance optimization with the ant colony optimization in the context of weather one or the other is delivering faster picking times in several scenarios depending on the warehouse size ore the number of items on the picking list. 
 
-![Demo](https://i.imgur.com/3KGu73M.gif)
+![Demo](https://i.imgur.com/AxTIgYd.png)
 
 ## Setup
 Prerequisite:
